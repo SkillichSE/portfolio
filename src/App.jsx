@@ -6,7 +6,7 @@ function HoverButton({ href, children }) {
   const [hovered, setHovered] = useState(false);
 
   const style = {
-    width: "100%",
+    width: "100%", // кнопка занимает всю ширину карточки
     backgroundColor: "white",
     color: "#18181b",
     borderRadius: "0.375rem",
@@ -51,7 +51,7 @@ export default function Portfolio() {
     {
       name: "Lumi-bot",
       description:
-        "A Telegram bot project with automation and intelligent behavior elements. Designed as a practical bot architecture using modern Python Telegram libraries.",
+        "A Telegram bot project with automation and intelligent behavior elements. Designed as a practical bot architecture using modern Python Telegram libraries.ㅤㅤㅤㅤㅤㅤ",
       link: "https://github.com/SkillichSE/Lumi-bot",
     },
   ];
@@ -67,14 +67,13 @@ export default function Portfolio() {
     resize();
     window.addEventListener("resize", resize);
 
-    // Пути к картинкам в public
     const imagePaths = [
-      "/blackwhite.png",
-      "/blackpurple.png",
-      "/BRAZILAVA.png",
-      "/green.png",
-      "/logocat.png",
-      "/USAava.png",
+      import.meta.env.BASE_URL + "blackwhite.png",
+      import.meta.env.BASE_URL + "blackpurple.png",
+      import.meta.env.BASE_URL + "BRAZILAVA.png",
+      import.meta.env.BASE_URL + "green.png",
+      import.meta.env.BASE_URL + "logocat.png",
+      import.meta.env.BASE_URL + "USAava.png",
     ];
 
     const images = imagePaths.map((src) => {
@@ -87,11 +86,11 @@ export default function Portfolio() {
     const objects = Array.from({ length: 50 }, () => ({
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
-      s: Math.random() * 0.5 + 0.2, // скорость падения
+      s: Math.random() * 0.3 + 0.1,
       size: objectSize,
       img: images[Math.floor(Math.random() * images.length)],
       rotation: Math.random() * Math.PI * 2,
-      rotationSpeed: (Math.random() - 0.5) * 0.02,
+      rotationSpeed: (Math.random() - 0.5) * 0.01,
     }));
 
     let raf;
@@ -101,7 +100,6 @@ export default function Portfolio() {
       objects.forEach((obj) => {
         obj.y += obj.s;
         obj.rotation += obj.rotationSpeed;
-
         if (obj.y > canvas.height) obj.y = -obj.size;
 
         ctx.save();
@@ -114,7 +112,6 @@ export default function Portfolio() {
       raf = requestAnimationFrame(animate);
     };
 
-    // Ждём загрузки всех картинок
     Promise.all(images.map((img) => new Promise((res) => (img.onload = res)))).then(() => {
       animate();
     });
@@ -130,12 +127,21 @@ export default function Portfolio() {
     border: "1px solid #52525b",
     borderRadius: "0.5rem",
     boxShadow: "0 20px 25px -5px rgba(0,0,0,0.1)",
-    padding: "1.5rem",
+    padding: "1rem",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    gap: "0.75rem",
+    gap: "0.5rem",
+    height: "auto",
   };
+
+const projectCardStyle = {
+  ...cardStyle,
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "flex-start", 
+  height: "auto", 
+};
 
   return (
     <div
@@ -151,12 +157,7 @@ export default function Portfolio() {
       {/* Canvas с падающими картинками */}
       <canvas
         ref={canvasRef}
-        style={{
-          position: "fixed",
-          inset: 0,
-          zIndex: 0,
-          opacity: 0.6,
-        }}
+        style={{ position: "fixed", inset: 0, zIndex: 0, opacity: 0.6 }}
       />
 
       <div
@@ -177,42 +178,16 @@ export default function Portfolio() {
             margin: "0 auto 3rem auto",
           }}
         >
-          <h1
-            style={{
-              fontSize: "3rem",
-              fontWeight: "bold",
-              color: "white",
-              marginBottom: "1rem",
-            }}
-          >
+          <h1 style={{ fontSize: "3rem", fontWeight: "bold", color: "white", marginBottom: "1rem" }}>
             Ski's
           </h1>
-          <p
-            style={{
-              color: "#e4e4e7",
-              fontSize: "1.125rem",
-              marginBottom: "0.5rem",
-            }}
-          >
+          <p style={{ color: "#e4e4e7", fontSize: "1.125rem", marginBottom: "0.5rem" }}>
             AI Developer • Python & Telegram Automation
           </p>
-          <p
-            style={{
-              color: "#d4d4d8",
-              fontSize: "0.875rem",
-              marginBottom: "1rem",
-            }}
-          >
+          <p style={{ color: "#d4d4d8", fontSize: "0.875rem", marginBottom: "1rem" }}>
             Focused on Telegram bots, automation systems, and experimenting with artificial intelligence.
           </p>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "0.5rem",
-              flexWrap: "wrap",
-            }}
-          >
+          <div style={{ display: "flex", justifyContent: "center", gap: "0.5rem", flexWrap: "wrap" }}>
             {skills.map((s) => (
               <span
                 key={s}
@@ -262,14 +237,7 @@ export default function Portfolio() {
 
         {/* Projects */}
         <div style={{ maxWidth: "80rem", margin: "0 auto" }}>
-          <h2
-            style={{
-              fontSize: "1.875rem",
-              fontWeight: "600",
-              color: "white",
-              marginBottom: "1.5rem",
-            }}
-          >
+          <h2 style={{ fontSize: "1.875rem", fontWeight: "600", color: "white", marginBottom: "1.5rem" }}>
             Projects
           </h2>
           <div
@@ -280,31 +248,16 @@ export default function Portfolio() {
             }}
           >
             {projects.map((project, i) => (
-              <div
-                key={i}
-                style={{
-                  backgroundColor: "#3f3f46",
-                  border: "1px solid #52525b",
-                  borderRadius: "0.5rem",
-                  boxShadow: "0 20px 25px -5px rgba(0,0,0,0.1)",
-                  padding: "1.5rem",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "0.75rem",
-                }}
-              >
-                <h3
-                  style={{
-                    fontSize: "1.25rem",
-                    fontWeight: "bold",
-                    color: "white",
-                  }}
-                >
-                  {project.name}
-                </h3>
-                <p style={{ color: "#e4e4e7", flex: 1 }}>{project.description}</p>
-                <HoverButton href={project.link}>View on GitHub</HoverButton>
-              </div>
+              <div key={i} style={projectCardStyle}>
+  <h3 style={{ fontSize: "1.25rem", fontWeight: "bold", color: "white" }}>
+    {project.name}
+  </h3>
+  <p style={{ color: "#e4e4e7", textAlign: "center", margin: "0.5rem 0" }}>
+    {project.description}
+  </p>
+  <HoverButton href={project.link}>View on GitHub</HoverButton>
+</div>
+
             ))}
           </div>
         </div>
