@@ -77,20 +77,25 @@ function Tags({ list }) {
   );
 }
 
-function Card({ p }) {
+function Row({ p, i }) {
   const body = (
     <>
-      <span className="cat">{p.category}</span>
-      <h3>{p.name}</h3>
-      <p>{p.description}</p>
-      <Tags list={p.tags} />
-      {p.link && <span className="go">GitHub →</span>}
+      <span className="n">{String(i + 1).padStart(2, "0")}</span>
+      <div>
+        <h3>{p.name}</h3>
+        <p>{p.description}</p>
+        <Tags list={p.tags} />
+      </div>
+      <div className="side up">
+        <span>{p.category}</span>
+        {p.link ? <span className="arrow">↗</span> : <span>Soon</span>}
+      </div>
     </>
   );
   return p.link ? (
-    <a className="card" href={p.link} target="_blank" rel="noreferrer">{body}</a>
+    <a className="row" href={p.link} target="_blank" rel="noreferrer">{body}</a>
   ) : (
-    <div className="card soon">{body}</div>
+    <div className="row soon">{body}</div>
   );
 }
 
@@ -104,8 +109,9 @@ export default function App() {
       <div className="page">
         <nav className="nav">
           <div className="wrap">
-            <a href="#top" className="logo">Ski's</a>
-            <ul>
+            <a href="#top" className="logo">SKI'S</a>
+            <ul className="up">
+              <li><a href="#main">Main</a></li>
               <li><a href="#projects">Projects</a></li>
               <li><a href="#about">About</a></li>
               <li><a href="#contact">Contact</a></li>
@@ -113,65 +119,78 @@ export default function App() {
           </div>
         </nav>
 
-        <main className="wrap" id="top">
-          <section className="hero">
-            <h1>Ski's</h1>
+        <header className="panel hero" id="top">
+          <div className="wrap">
+            <h1 className="title">Ski's</h1>
             <p className="role">ML-Developer • Python Junior</p>
-            <p className="bio">I study AI development, implement and train. I can do a little bit in Telegram bots.</p>
+            <p className="lede">I study AI development, implement and train. I can do a little bit in Telegram bots.</p>
             <div className="cta">
-              <a className="btn primary" href="#projects">See projects</a>
+              <a className="btn solid" href="#projects">Projects</a>
               <a className="btn" href="#contact">Contact</a>
             </div>
-          </section>
+          </div>
+          <span className="scroll up">Scroll</span>
+        </header>
 
-          <section id="projects">
-            <div className="label">Main project</div>
-            <a className="card featured" href={featured.link} target="_blank" rel="noreferrer">
-              <h3>{featured.name}</h3>
-              <p>{featured.description}</p>
-              <Tags list={featured.tags} />
-              <span className="go">GitHub →</span>
-            </a>
+        <section className="panel featured" id="main">
+          <div className="wrap">
+            <div className="eyebrow">Main project</div>
+            <h2 className="title">{featured.name}</h2>
+            <p className="lede">{featured.description}</p>
+            <Tags list={featured.tags} />
+            <div className="cta">
+              <a className="btn" href={featured.link} target="_blank" rel="noreferrer">View on GitHub</a>
+            </div>
+          </div>
+        </section>
 
-            <div className="label" style={{ marginTop: "2.5rem" }}>Other projects</div>
-            <div className="filters">
+        <section className="block" id="projects">
+          <div className="wrap">
+            <div className="eyebrow">Projects</div>
+            <h2 className="title">All missions</h2>
+            <div className="filters up">
               {FILTERS.map(([key, name]) => (
-                <button key={key} className={`chip ${filter === key ? "on" : ""}`} onClick={() => setFilter(key)}>
+                <button key={key} className={`tab up ${filter === key ? "on" : ""}`} onClick={() => setFilter(key)}>
                   {name}
                 </button>
               ))}
             </div>
-            <div className="grid">
-              {shown.map((p) => <Card key={p.name} p={p} />)}
+            <div className="list">
+              {shown.map((p, i) => <Row key={p.name} p={p} i={i} />)}
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section id="about">
-            <div className="label">Skills</div>
-            <div className="skills">
+        <section className="block" id="about">
+          <div className="wrap">
+            <div className="eyebrow">About</div>
+            <h2 className="title">Skills</h2>
+            <div className="cols">
               {skills.map((g) => (
-                <div key={g.group} className="card">
+                <div key={g.group}>
                   <h3>{g.group}</h3>
-                  <Tags list={g.items} />
+                  <ul>{g.items.map((t) => <li key={t}>{t}</li>)}</ul>
                 </div>
               ))}
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section id="contact">
-            <div className="label">Contact</div>
-            <div className="contacts">
+        <section className="block" id="contact">
+          <div className="wrap">
+            <div className="eyebrow">Contact</div>
+            <h2 className="title">Get in touch</h2>
+            <div className="contact-list">
               {contacts.map((c) => (
-                <a key={c.label} className="card" href={c.href} target="_blank" rel="noreferrer">
-                  <span className="k">{c.label}</span>
-                  <span className="v">{c.value}</span>
+                <a key={c.label} href={c.href} target="_blank" rel="noreferrer">
+                  <span className="up" style={{ color: "var(--muted)" }}>{c.label}</span>
+                  <span className="v">{c.value} ↗</span>
                 </a>
               ))}
             </div>
-          </section>
-
-          <footer>© Ski's</footer>
-        </main>
+            <footer className="up">© Ski's</footer>
+          </div>
+        </section>
       </div>
     </>
   );
